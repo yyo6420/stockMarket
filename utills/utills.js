@@ -29,3 +29,53 @@ export function filterStocksByPrice(givenPrice, above) {
   }
 }
 
+export function OperateOnStock(operation, identifier) {
+  if (operation === "buy") {
+    let theStock = stockMarket.stocks.filter(
+      (stock) => stock.name === identifier || stock.id === identifier
+    );
+    if (theStock.length > 1) {
+      theStock.splice(0, 1);
+    }
+    let theSameCategoryRest = stockMarket.stocks.filter(
+      (stock) =>
+        stock.category === theStock[0].category &&
+        stock.id !== theStock[0].id &&
+        stock.name !== theStock[0].name
+    );
+    theStock[0].availableStocks -= 1;
+    theStock[0].previousPrices = theStock[0].currentPrice;
+    theStock[0].currentPrice *= 1.05;
+    if (theSameCategoryRest.length) {
+      for (let stock = 0; stock < theSameCategoryRest.length; stock++) {
+        theSameCategoryRest[stock].previousPrices =
+          theSameCategoryRest[stock].currentPrice;
+        theSameCategoryRest[stock].currentPrice *= 1.01;
+      }
+    }
+  }
+  else if (operation === "sell"){
+    let theStock = stockMarket.stocks.filter(
+      (stock) => stock.name === identifier || stock.id === identifier
+    );
+    if (theStock.length > 1) {
+      theStock.splice(0, 1);
+    }
+    let theSameCategoryRest = stockMarket.stocks.filter(
+      (stock) =>
+        stock.category === theStock[0].category &&
+        stock.id !== theStock[0].id &&
+        stock.name !== theStock[0].name
+    );
+    theStock[0].availableStocks += 1;
+    theStock[0].previousPrices = theStock[0].currentPrice;
+    theStock[0].currentPrice *= 0.95;
+    if (theSameCategoryRest.length) {
+      for (let stock = 0; stock < theSameCategoryRest.length; stock++) {
+        theSameCategoryRest[stock].previousPrices =
+          theSameCategoryRest[stock].currentPrice;
+        theSameCategoryRest[stock].currentPrice *= 0.99;
+      }
+    } 
+  }
+}
