@@ -15,9 +15,10 @@ function menu() {
   const action = input("what would you like to do now? ");
   if (action === "1") {
     const stodckIdentifier = input(
-      "Please enter any identifier\n(name or id only):"
+      "Please enter any identifier\n(name or id only): "
     );
     console.log(searchStock(stodckIdentifier));
+    menu();
   } else if (action === "2") {
     const priceAmount = input("What is the amount? ");
     const aboveOrbelow = input("enter: above or below: ");
@@ -26,6 +27,19 @@ function menu() {
     } else {
       console.log(filterStocksByPrice(priceAmount, false));
     }
+    menu();
+  } else if (action === "3") {
+    const stodckIdentifier = input(
+      "Please enter any identifier\n(name or id only): "
+    );
+    const buyOrsell = input("enter: buy or sell: ");
+    OperateOnStock(buyOrsell, stodckIdentifier);
+    menu();
+  } else if (action === "4") {
+    console.log("Bye Bye ;)");
+  } else {
+    console.log("Invalid option");
+    menu();
   }
 }
 
