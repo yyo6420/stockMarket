@@ -11,11 +11,9 @@ function formatDate(date) {
   return `${y}-${m}-${d} ${h}:${min}:${s}`;
 }
 
-// export function searchStock(identifier) {
-//     if (isNaN(identifier)){
-//           return stockMarket.fillter()
-//     }
-// }
-
-// console.log(searchStock("BrightFuture Academy"))
+export function searchStock(identifier) {
+    if (isNaN(identifier)){
+        return stockMarket.stocks.filter((stock) => stock.name === identifier)
+    }
+}
 
