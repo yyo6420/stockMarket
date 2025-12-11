@@ -1,6 +1,6 @@
-import { stockMarket } from "../data/data.js"
+import { stockMarket } from "../data/data.js";
 
-function formatDate(date) {
+export function formatDate(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
@@ -12,8 +12,20 @@ function formatDate(date) {
 }
 
 export function searchStock(identifier) {
-    if (isNaN(identifier)){
-        return stockMarket.stocks.filter((stock) => stock.name === identifier)
-    }
+  return stockMarket.stocks.filter(
+    (stock) => stock.name === identifier || stock.id === identifier
+  );
+}
+
+export function filterStocksByPrice(givenPrice, above) {
+  if (above) {
+    return stockMarket.stocks.filter(
+      (stock) => stock.currentPrice > givenPrice
+    );
+  } else {
+    return stockMarket.stocks.filter(
+      (stock) => stock.currentPrice < givenPrice
+    );
+  }
 }
 
