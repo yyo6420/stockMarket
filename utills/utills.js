@@ -30,6 +30,7 @@ export function filterStocksByPrice(givenPrice, above) {
 }
 
 export function OperateOnStock(operation, identifier) {
+  const now = new Date();
   if (operation === "buy") {
     let theStock = stockMarket.stocks.filter(
       (stock) => stock.name === identifier || stock.id === identifier
@@ -53,8 +54,8 @@ export function OperateOnStock(operation, identifier) {
         theSameCategoryRest[stock].currentPrice *= 1.01;
       }
     }
-  }
-  else if (operation === "sell"){
+    stockMarket.lastUpdated = formatDate(now);
+  } else if (operation === "sell") {
     let theStock = stockMarket.stocks.filter(
       (stock) => stock.name === identifier || stock.id === identifier
     );
@@ -76,6 +77,7 @@ export function OperateOnStock(operation, identifier) {
           theSameCategoryRest[stock].currentPrice;
         theSameCategoryRest[stock].currentPrice *= 0.99;
       }
-    } 
+    }
+    stockMarket.lastUpdated = formatDate(now);
   }
 }
