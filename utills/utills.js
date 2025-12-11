@@ -1,7 +1,7 @@
 import { stockMarket } from "../data/data.js";
 import input from "analiza-sync";
 
-export function formatDate(date) {
+function formatDate(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
@@ -85,5 +85,7 @@ export function OperateOnStock(operation, identifier) {
       }
     }
     stockMarket.lastUpdated = formatDate(now);
+  } else {
+    console.log("Invalid operation :(")
   }
 }
