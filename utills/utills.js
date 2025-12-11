@@ -1,4 +1,5 @@
 import { stockMarket } from "../data/data.js";
+import input from "analiza-sync";
 
 export function formatDate(date) {
   const y = date.getFullYear();
@@ -31,6 +32,7 @@ export function filterStocksByPrice(givenPrice, above) {
 
 export function OperateOnStock(operation, identifier) {
   const now = new Date();
+  const amount = input(`how many would you like to ${operation} form ${identifier}? `);
   if (operation === "buy") {
     let theStock = stockMarket.stocks.filter(
       (stock) => stock.name === identifier || stock.id === identifier
@@ -44,15 +46,19 @@ export function OperateOnStock(operation, identifier) {
         stock.id !== theStock[0].id &&
         stock.name !== theStock[0].name
     );
-    theStock[0].availableStocks -= 1;
-    theStock[0].previousPrices = theStock[0].currentPrice;
-    theStock[0].currentPrice *= 1.05;
-    if (theSameCategoryRest.length) {
-      for (let stock = 0; stock < theSameCategoryRest.length; stock++) {
-        theSameCategoryRest[stock].previousPrices =
-          theSameCategoryRest[stock].currentPrice;
-        theSameCategoryRest[stock].currentPrice *= 1.01;
+    if (theStock[0].availableStocks >= amount) {
+      theStock[0].availableStocks -= amount;
+      theStock[0].previousPrices = theStock[0].currentPrice;
+      theStock[0].currentPrice *= 1.05;
+      if (theSameCategoryRest.length) {
+        for (let stock = 0; stock < theSameCategoryRest.length; stock++) {
+          theSameCategoryRest[stock].previousPrices =
+            theSameCategoryRest[stock].currentPrice;
+          theSameCategoryRest[stock].currentPrice *= 1.01;
+        }
       }
+    } else {
+        console.log("Sorry ,there is not enough quantity of this item available for your request :(")
     }
     stockMarket.lastUpdated = formatDate(now);
   } else if (operation === "sell") {
@@ -68,7 +74,7 @@ export function OperateOnStock(operation, identifier) {
         stock.id !== theStock[0].id &&
         stock.name !== theStock[0].name
     );
-    theStock[0].availableStocks += 1;
+    theStock[0].availableStocks += Number(amount);
     theStock[0].previousPrices = theStock[0].currentPrice;
     theStock[0].currentPrice *= 0.95;
     if (theSameCategoryRest.length) {
